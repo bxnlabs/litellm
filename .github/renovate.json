@@ -4,11 +4,23 @@
     "mergeConfidence:all-badges",
     "config:recommended"
   ],
-  "enabledManagers": ["regex", "dockerfile"],
+  "enabledManagers": [
+    "regex",
+    "dockerfile"
+  ],
   "packageRules": [
+    {
+      "matchFileNames": [
+        "*"
+      ],
+      "enabled": false
+    },
     {
       "matchDatasources": [
         "docker"
+      ],
+      "matchFileNames": [
+        "bxn/Dockerfile"
       ],
       "pinDigests": true,
       "versioning": "loose"
@@ -24,8 +36,5 @@
       ]
     }
   ],
-  "dockerfile": {
-    "ignorePaths": ["**", "!bxn/Dockerfile"]
-  },
   "automerge": true
 }
