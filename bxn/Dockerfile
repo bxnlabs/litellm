@@ -3,7 +3,7 @@ FROM ghcr.io/bxnlabs/containers/py-devtools:20250217.3_0ea39c2@sha256:004395e7cc
 # Dependencies
 COPY pyproject.toml [p]oetry.lock ./
 RUN --mount=type=cache,target=/var/cache/pypoetry,sharing=locked \
-    POETRY_CACHE_DIR=/var/cache/pypoetry uvx poetry install --sync --no-root --extras=proxy --compile
+    POETRY_CACHE_DIR=/var/cache/pypoetry uvx poetry sync --no-root --extras=proxy --compile
 
 # Source
 COPY README.md ./
@@ -16,7 +16,7 @@ FROM devtools AS build
 
 # Prune dependencies to only what we need for release
 RUN --mount=type=cache,target=/var/cache/pypoetry,sharing=locked \
-    POETRY_CACHE_DIR=/var/cache/pypoetry uvx poetry install --only=main --sync --no-root --extras=proxy --compile
+    POETRY_CACHE_DIR=/var/cache/pypoetry uvx poetry sync --only=main --no-root --extras=proxy --compile
 RUN uv pip install --no-deps --compile .
 
 
