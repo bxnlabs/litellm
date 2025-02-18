@@ -11,6 +11,10 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Set up Git config
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
       - name: Checkout
         uses: actions/checkout@v4
         with:
