@@ -1,0 +1,153 @@
+model_list:
+  - model_name: "claude/haiku"
+    litellm_params:
+      model: anthropic/claude-3-5-haiku-20241022
+      api_key: os.environ/ANTHROPIC_API_KEY
+  - model_name: "claude/sonnet" 
+    litellm_params:
+      model: anthropic/claude-3-5-sonnet-20241022
+      api_key: os.environ/ANTHROPIC_API_KEY
+  - model_name: "gemini/flash"
+    litellm_params:
+      model: gemini/gemini-2.0-flash-001
+      api_key: os.environ/GEMINI_API_KEY
+      safety_settings:
+        - category: HARM_CATEGORY_HARASSMENT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_HATE_SPEECH
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_SEXUALLY_EXPLICIT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_DANGEROUS_CONTENT
+          threshold: BLOCK_NONE
+  - model_name: "gemini/flash-thinking"
+    litellm_params:
+      model: gemini/gemini-2.0-flash-thinking-exp-01-21
+      api_key: os.environ/GEMINI_API_KEY
+      safety_settings:
+        - category: HARM_CATEGORY_HARASSMENT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_HATE_SPEECH
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_SEXUALLY_EXPLICIT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_DANGEROUS_CONTENT
+          threshold: BLOCK_NONE
+  - model_name: "gemini/pro"
+    litellm_params:
+      model: gemini/gemini-1.5-pro-002
+      api_key: os.environ/GEMINI_API_KEY
+      safety_settings:
+        - category: HARM_CATEGORY_HARASSMENT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_HATE_SPEECH
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_SEXUALLY_EXPLICIT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_DANGEROUS_CONTENT
+          threshold: BLOCK_NONE
+  - model_name: "gemini/pro-experimental"
+    litellm_params:
+      model: gemini/gemini-2.0-pro-exp-02-05
+      api_key: os.environ/GEMINI_API_KEY
+      safety_settings:
+        - category: HARM_CATEGORY_HARASSMENT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_HATE_SPEECH
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_SEXUALLY_EXPLICIT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_DANGEROUS_CONTENT
+          threshold: BLOCK_NONE
+  - model_name: "openai/4o-mini"
+    litellm_params:
+      model: openai/gpt-4o-mini-2024-07-18
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "openai/o3-mini"
+    litellm_params:
+      model: openai/o3-mini-2025-01-31
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "openai/4o"
+    litellm_params:
+      model: openai/gpt-4o-2024-11-20
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "openai/chatgpt"
+    litellm_params:
+      model: openai/chatgpt-4o-latest
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "openai/o1"
+    litellm_params:
+      model: openai/o1-2024-12-17
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "mistral/large"
+    litellm_params:
+      model: mistral/mistral-large-2411
+      api_key: os.environ/MISTRAL_API_KEY
+  - model_name: "mistral/codestral"
+    litellm_params:
+      model: mistral/codestral-2501
+      api_key: os.environ/MISTRAL_API_KEY
+  - model_name: "mistral/pixtral-large"
+    litellm_params:
+      model: mistral/pixtral-large-2411
+      api_key: os.environ/MISTRAL_API_KEY
+  - model_name: "perplexity/sonar"
+    litellm_params:
+      model: perplexity/sonar
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-reasoning"
+    litellm_params:
+      model: perplexity/sonar-reasoning
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-pro"
+    litellm_params:
+      model: perplexity/sonar-pro
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-reasoning-pro"
+    litellm_params:
+      model: perplexity/sonar-reasoning-pro
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "togetherai/deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free"
+    litellm_params:
+      model: together_ai/deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free
+      api_key: os.environ/TOGETHER_API_KEY
+  - model_name: "togetherai/meta-llama/Llama-3.3-70B-Instruct-Turbo-Free"
+    litellm_params:
+      model: together_ai/meta-llama/Llama-3.3-70B-Instruct-Turbo-Free
+      api_key: os.environ/TOGETHER_API_KEY
+  - model_name: "togetherai/meta-llama/Llama-3.3-70B-Instruct-Turbo"
+    litellm_params:
+      model: together_ai/meta-llama/Llama-3.3-70B-Instruct-Turbo
+      api_key: os.environ/TOGETHER_API_KEY
+  - model_name: "togetherai/meta-llama/Llama-3.2-90B-Vision-Instruct-Turbo"
+    litellm_params:
+      model: together_ai/meta-llama/Llama-3.2-90B-Vision-Instruct-Turbo
+      api_key: os.environ/TOGETHER_API_KEY
+  - model_name: "togetherai/Qwen/Qwen2.5-72B-Instruct-Turbo"
+    litellm_params:
+      model: together_ai/Qwen/Qwen2.5-72B-Instruct-Turbo
+      api_key: os.environ/TOGETHER_API_KEY
+  - model_name: "togetherai/Qwen/Qwen2.5-Coder-32B-Instruct"
+    litellm_params:
+      model: together_ai/Qwen/Qwen2.5-Coder-32B-Instruct
+      api_key: os.environ/TOGETHER_API_KEY
+  - model_name: "togetherai/Qwen/QwQ-32B-Preview"
+    litellm_params:
+      model: together_ai/Qwen/QwQ-32B-Preview
+      api_key: os.environ/TOGETHER_API_KEY
+  - model_name: "togetherai/Qwen/Qwen2-VL-72B-Instruct"
+    litellm_params:
+      model: together_ai/Qwen/Qwen2-VL-72B-Instruct
+      api_key: os.environ/TOGETHER_API_KEY
+  - model_name: "togetherai/deepseek-ai/DeepSeek-V3"
+    litellm_params:
+      model: together_ai/deepseek-ai/DeepSeek-V3
+      api_key: os.environ/TOGETHER_API_KEY
+  - model_name: "togetherai/deepseek-ai/DeepSeek-R1-Distill-Llama-70B"
+    litellm_params:
+      model: together_ai/deepseek-ai/DeepSeek-R1-Distill-Llama-70B
+      api_key: os.environ/TOGETHER_API_KEY
+  - model_name: "togetherai/deepseek-ai/DeepSeek-R1"
+    litellm_params:
+      model: together_ai/deepseek-ai/DeepSeek-R1
+      api_key: os.environ/TOGETHER_API_KEY
