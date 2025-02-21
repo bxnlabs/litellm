@@ -5,7 +5,7 @@
     "config:recommended"
   ],
   "enabledManagers": [
-    "regex",
+    "custom.regex",
     "dockerfile"
   ],
   "includePaths": [
@@ -24,7 +24,9 @@
     {
       "customType": "regex",
       "description": "Update _VERSION variables in Dockerfiles",
-      "fileMatch": ["bxn/Dockerfile"],
+      "fileMatch": [
+        "bxn/Dockerfile"
+      ],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[a-z-]+?)(?: packageName=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\s(?:ARG) (?<depName>[^\\s]+?)_VERSION=(?<currentValue>.+)\\s"
       ]
