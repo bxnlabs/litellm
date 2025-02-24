@@ -1,0 +1,50 @@
+name: sync
+
+on:
+
+  schedule:
+    - cron: '0 */6 * * *'  # Run every 6 hours
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Set up Git config
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/BerriAI/litellm.git
+          git fetch upstream
+      - name: Sync upstream branch
+        run: |
+          git fetch origin upstream:upstream
+          git checkout upstream
+          git reset --hard upstream/litellm_stable_release_branch
+          git push -f origin upstream
+      - name: Check if upstream diverged
+        id: check_diverged
+        run: |
+          git checkout main
+          if ! git merge-base --is-ancestor upstream HEAD; then
+            echo "diverged=true" >> $GITHUB_OUTPUT
+            git merge upstream
+          fi
+      - name: Create PR if needed
+        uses: peter-evans/create-pull-request@v7
+        if: steps.check_diverged.outputs.diverged == 'true'
+        with:
+          title: "Sync upstream changes"
+          body: "Automated PR to sync upstream changes from litellm stable release branch"
+          branch: sync-upstream
+          base: main
+          delete-branch: true
