@@ -5,7 +5,7 @@ model_list:
       api_key: os.environ/ANTHROPIC_API_KEY
   - model_name: "claude/sonnet" 
     litellm_params:
-      model: anthropic/claude-3-5-sonnet-20241022
+      model: anthropic/claude-3-7-sonnet-20250219
       api_key: os.environ/ANTHROPIC_API_KEY
   - model_name: "gemini/flash"
     litellm_params:
