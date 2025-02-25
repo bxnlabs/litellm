@@ -125,6 +125,10 @@ model_list:
     litellm_params:
       model: perplexity/sonar-reasoning-pro
       api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/r1"
+    litellm_params:
+      model: perplexity/r1-1776
+      api_key: os.environ/PERPLEXITY_API_KEY
   - model_name: "togetherai/deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free"
     litellm_params:
       model: together_ai/deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free
