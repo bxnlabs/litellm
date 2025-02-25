@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/var/cache/pypoetry,sharing=locked \
 RUN uv pip install --no-deps --compile .
 
 
-FROM ghcr.io/bxnlabs/containers/py-base:20250220.1_6525465@sha256:7490e74c3bac3f22a4a5bc19dd5abf10779f6c7290277d7e0f08e8c00e21aa36
+FROM ghcr.io/bxnlabs/containers/py-base:20250225.1_f9182b5@sha256:db274cf022e3548a1cdaaf42d58894fcf98ec686d4291d0aac431416ebcf6395
 
 COPY --from=build ${VIRTUAL_ENV}/ ${VIRTUAL_ENV}/
 COPY bxn/config.yaml /etc/litellm/config.yaml
