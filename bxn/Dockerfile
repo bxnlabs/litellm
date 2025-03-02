@@ -1,7 +1,14 @@
-FROM ghcr.io/bxnlabs/containers/py-devtools:20250225.2_1ccc2a3@sha256:f1ed413ce972d46a9e6cad52d36b7430b813e5cb0d93310906975153c2f54d17 AS devtools
+FROM ghcr.io/bxnlabs/containers/py-devtools:20250225.2_1ccc2a3@sha256:f1ed413ce972d46a9e6cad52d36b7430b813e5cb0d93310906975153c2f54d17 AS deps
 
 # Dependencies
 COPY pyproject.toml [p]oetry.lock ./
+RUN --mount=type=cache,target=/var/cache/pypoetry,sharing=locked \
+    POETRY_CACHE_DIR=/var/cache/pypoetry uvx poetry sync --only=main --no-root --extras=proxy --compile
+
+
+FROM deps AS dev
+
+# Install dev dependencies
 RUN --mount=type=cache,target=/var/cache/pypoetry,sharing=locked \
     POETRY_CACHE_DIR=/var/cache/pypoetry uvx poetry sync --no-root --extras=proxy --compile
 
@@ -12,11 +19,12 @@ COPY litellm ./litellm
 RUN uvx poetry install --only-root --compile
 
 
-FROM devtools AS build
+FROM deps AS build
 
-# Prune dependencies to only what we need for release
-RUN --mount=type=cache,target=/var/cache/pypoetry,sharing=locked \
-    POETRY_CACHE_DIR=/var/cache/pypoetry uvx poetry sync --only=main --no-root --extras=proxy --compile
+# Source
+COPY README.md ./
+COPY enterprise ./enterprise
+COPY litellm ./litellm
 RUN uv pip install --no-deps --compile .
 
 
