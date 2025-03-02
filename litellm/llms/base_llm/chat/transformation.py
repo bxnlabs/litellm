@@ -18,7 +18,6 @@ from typing import (
 import httpx
 from pydantic import BaseModel
 
-from litellm._logging import verbose_logger
 from litellm.constants import RESPONSE_FORMAT_TOOL_NAME
 from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
 from litellm.types.llms.openai import (
@@ -121,9 +120,6 @@ class BaseConfig(ABC):
 
         Overriden by OpenAI/Azure
         """
-        verbose_logger.debug(
-            "Translating developer role to system role for non-OpenAI providers."
-        )  # ensure user knows what's happening with their input.
         return map_developer_role_to_system_role(messages=messages)
 
     def should_retry_llm_api_inside_llm_translation_on_http_error(
@@ -253,7 +249,7 @@ class BaseConfig(ABC):
 
     def get_complete_url(
         self,
-        api_base: str,
+        api_base: Optional[str],
         model: str,
         optional_params: dict,
         stream: Optional[bool] = None,
@@ -265,6 +261,8 @@ class BaseConfig(ABC):
 
         Some providers need `model` in `api_base`
         """
+        if api_base is None:
+            raise ValueError("api_base is required")
         return api_base
 
     @abstractmethod
