@@ -3,7 +3,7 @@ model_list:
     litellm_params:
       model: anthropic/claude-3-5-haiku-20241022
       api_key: os.environ/ANTHROPIC_API_KEY
-  - model_name: "claude/sonnet" 
+  - model_name: "claude/sonnet"
     litellm_params:
       model: anthropic/claude-3-7-sonnet-20250219
       api_key: os.environ/ANTHROPIC_API_KEY
@@ -157,9 +157,9 @@ model_list:
     litellm_params:
       model: together_ai/Qwen/Qwen2.5-Coder-32B-Instruct
       api_key: os.environ/TOGETHER_API_KEY
-  - model_name: "togetherai/Qwen/QwQ-32B-Preview"
+  - model_name: "togetherai/Qwen/QwQ-32B"
     litellm_params:
-      model: together_ai/Qwen/QwQ-32B-Preview
+      model: together_ai/Qwen/QwQ-32B
       api_key: os.environ/TOGETHER_API_KEY
   - model_name: "togetherai/Qwen/Qwen2-VL-72B-Instruct"
     litellm_params:
