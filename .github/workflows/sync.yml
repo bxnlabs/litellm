@@ -35,9 +35,9 @@ jobs:
         id: check_diverged
         run: |
           git checkout main
-          if ! git merge-base --is-ancestor upstream HEAD; then
+          if ! git merge-base --is-ancestor origin/upstream HEAD; then
             echo "diverged=true" >> $GITHUB_OUTPUT
-            git merge upstream
+            git merge origin/upstream
           fi
       - name: Create PR if needed
         uses: peter-evans/create-pull-request@v7
