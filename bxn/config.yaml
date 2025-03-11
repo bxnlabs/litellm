@@ -12,6 +12,7 @@ model_list:
       model: anthropic/claude-3-7-sonnet-20250219
       api_key: os.environ/ANTHROPIC_API_KEY
       max_tokens: 32000
+      merge_reasoning_content_in_choices: true
       thinking:
         type: enabled
         budget_tokens: 16000
