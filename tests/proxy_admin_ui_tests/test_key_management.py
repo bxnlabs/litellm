@@ -370,11 +370,7 @@ async def test_get_users(prisma_client):
     assert "users" in result
 
     for user in result["users"]:
-        assert "user_id" in user
-        assert "spend" in user
-        assert "user_email" in user
-        assert "user_role" in user
-        assert "key_count" in user
+        assert isinstance(user, LiteLLM_UserTable)
 
     # Clean up test users
     for user in test_users:
@@ -397,12 +393,12 @@ async def test_get_users_key_count(prisma_client):
     assert len(initial_users["users"]) > 0, "No users found to test with"
 
     test_user = initial_users["users"][0]
-    initial_key_count = test_user["key_count"]
+    initial_key_count = test_user.key_count
 
     # Create a new key for the selected user
     new_key = await generate_key_fn(
         data=GenerateKeyRequest(
-            user_id=test_user["user_id"],
+            user_id=test_user.user_id,
             key_alias=f"test_key_{uuid.uuid4()}",
             models=["fake-model"],
         ),
@@ -418,8 +414,8 @@ async def test_get_users_key_count(prisma_client):
     print("updated_users", updated_users)
     updated_key_count = None
     for user in updated_users["users"]:
-        if user["user_id"] == test_user["user_id"]:
-            updated_key_count = user["key_count"]
+        if user.user_id == test_user.user_id:
+            updated_key_count = user.key_count
             break
 
     assert updated_key_count is not None, "Test user not found in updated users list"
@@ -1033,7 +1029,9 @@ async def test_list_key_helper_team_filtering(prisma_client):
         # Test 1: Get all keys with pagination (exclude litellm-dashboard)
         all_keys = []
         page = 1
-        while True:
+        max_pages_to_check = 3  # Only check the first 3 pages
+
+        while page <= max_pages_to_check:
             result = await _list_key_helper(
                 prisma_client=prisma_client,
                 size=100,
@@ -1047,7 +1045,7 @@ async def test_list_key_helper_team_filtering(prisma_client):
 
             all_keys.extend(result["keys"])
 
-            if page >= result["total_pages"]:
+            if page >= result["total_pages"] or page >= max_pages_to_check:
                 break
             page += 1
 

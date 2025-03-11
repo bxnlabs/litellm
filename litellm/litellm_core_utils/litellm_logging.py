@@ -25,6 +25,7 @@ from litellm import (
     turn_off_message_logging,
 )
 from litellm._logging import _is_debugging_on, verbose_logger
+from litellm.batches.batch_utils import _handle_completed_batch
 from litellm.caching.caching import DualCache, InMemoryCache
 from litellm.caching.caching_handler import LLMCachingHandler
 from litellm.cost_calculator import _select_model_name_for_cost_calc
@@ -50,6 +51,7 @@ from litellm.types.utils import (
     CallTypes,
     EmbeddingResponse,
     ImageResponse,
+    LiteLLMBatch,
     LiteLLMLoggingBaseClass,
     ModelResponse,
     ModelResponseStream,
@@ -871,6 +873,24 @@ class Logging(LiteLLMLoggingBaseClass):
 
         return None
 
+    async def _response_cost_calculator_async(
+        self,
+        result: Union[
+            ModelResponse,
+            ModelResponseStream,
+            EmbeddingResponse,
+            ImageResponse,
+            TranscriptionResponse,
+            TextCompletionResponse,
+            HttpxBinaryResponseContent,
+            RerankResponse,
+            Batch,
+            FineTuningJob,
+        ],
+        cache_hit: Optional[bool] = None,
+    ) -> Optional[float]:
+        return self._response_cost_calculator(result=result, cache_hit=cache_hit)
+
     def should_run_callback(
         self, callback: litellm.CALLBACK_TYPES, litellm_params: dict, event_hook: str
     ) -> bool:
@@ -912,6 +932,9 @@ class Logging(LiteLLMLoggingBaseClass):
             self.model_call_details["log_event_type"] = "successful_api_call"
             self.model_call_details["end_time"] = end_time
             self.model_call_details["cache_hit"] = cache_hit
+
+            if self.call_type == CallTypes.anthropic_messages.value:
+                result = self._handle_anthropic_messages_response_logging(result=result)
             ## if model in model cost map - log the response cost
             ## else set cost to None
             if (
@@ -928,8 +951,8 @@ class Logging(LiteLLMLoggingBaseClass):
                     or isinstance(result, TextCompletionResponse)
                     or isinstance(result, HttpxBinaryResponseContent)  # tts
                     or isinstance(result, RerankResponse)
-                    or isinstance(result, Batch)
                     or isinstance(result, FineTuningJob)
+                    or isinstance(result, LiteLLMBatch)
                 ):
                     ## HIDDEN PARAMS ##
                     hidden_params = getattr(result, "_hidden_params", {})
@@ -1525,6 +1548,20 @@ class Logging(LiteLLMLoggingBaseClass):
         print_verbose(
             "Logging Details LiteLLM-Async Success Call, cache_hit={}".format(cache_hit)
         )
+
+        ## CALCULATE COST FOR BATCH JOBS
+        if self.call_type == CallTypes.aretrieve_batch.value and isinstance(
+            result, LiteLLMBatch
+        ):
+
+            response_cost, batch_usage, batch_models = await _handle_completed_batch(
+                batch=result, custom_llm_provider=self.custom_llm_provider
+            )
+
+            result._hidden_params["response_cost"] = response_cost
+            result._hidden_params["batch_models"] = batch_models
+            result.usage = batch_usage
+
         start_time, end_time, result = self._success_handler_helper_fn(
             start_time=start_time,
             end_time=end_time,
@@ -1532,6 +1569,7 @@ class Logging(LiteLLMLoggingBaseClass):
             cache_hit=cache_hit,
             standard_logging_object=kwargs.get("standard_logging_object", None),
         )
+
         ## BUILD COMPLETE STREAMED RESPONSE
         if "async_complete_streaming_response" in self.model_call_details:
             return  # break out of this.
@@ -2269,6 +2307,37 @@ class Logging(LiteLLMLoggingBaseClass):
             )
             return complete_streaming_response
         return None
+
+    def _handle_anthropic_messages_response_logging(self, result: Any) -> ModelResponse:
+        """
+        Handles logging for Anthropic messages responses.
+
+        Args:
+            result: The response object from the model call
+
+        Returns:
+            The the response object from the model call
+
+        - For Non-streaming responses, we need to transform the response to a ModelResponse object.
+        - For streaming responses, anthropic_messages handler calls success_handler with a assembled ModelResponse.
+        """
+        if self.stream and isinstance(result, ModelResponse):
+            return result
+
+        result = litellm.AnthropicConfig().transform_response(
+            raw_response=self.model_call_details["httpx_response"],
+            model_response=litellm.ModelResponse(),
+            model=self.model,
+            messages=[],
+            logging_obj=self,
+            optional_params={},
+            api_key="",
+            request_data={},
+            encoding=litellm.encoding,
+            json_mode=False,
+            litellm_params={},
+        )
+        return result
 
 
 def set_callbacks(callback_list, function_id=None):  # noqa: PLR0915
@@ -3086,6 +3155,7 @@ class StandardLoggingPayloadSetup:
             response_cost=None,
             additional_headers=None,
             litellm_overhead_time_ms=None,
+            batch_models=None,
         )
         if hidden_params is not None:
             for key in StandardLoggingHiddenParams.__annotations__.keys():
@@ -3115,10 +3185,26 @@ class StandardLoggingPayloadSetup:
             str(original_exception.__class__.__name__) if original_exception else ""
         )
         _llm_provider_in_exception = getattr(original_exception, "llm_provider", "")
+
+        # Get traceback information (first 100 lines)
+        traceback_info = ""
+        if original_exception:
+            tb = getattr(original_exception, "__traceback__", None)
+            if tb:
+                import traceback
+
+                tb_lines = traceback.format_tb(tb)
+                traceback_info = "".join(tb_lines[:100])  # Limit to first 100 lines
+
+        # Get additional error details
+        error_message = str(original_exception)
+
         return StandardLoggingPayloadErrorInformation(
             error_code=error_status,
             error_class=error_class,
             llm_provider=_llm_provider_in_exception,
+            traceback=traceback_info,
+            error_message=error_message if original_exception else "",
         )
 
     @staticmethod
@@ -3183,6 +3269,7 @@ def get_standard_logging_object_payload(
                         api_base=None,
                         response_cost=None,
                         litellm_overhead_time_ms=None,
+                        batch_models=None,
                     )
                 )
 
@@ -3467,6 +3554,7 @@ def create_dummy_standard_logging_payload() -> StandardLoggingPayload:
         response_cost=None,
         additional_headers=None,
         litellm_overhead_time_ms=None,
+        batch_models=None,
     )
 
     # Convert numeric values to appropriate types

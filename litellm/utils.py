@@ -191,6 +191,9 @@ from typing import (
 from openai import OpenAIError as OriginalError
 
 from litellm.litellm_core_utils.thread_pool_executor import executor
+from litellm.llms.base_llm.anthropic_messages.transformation import (
+    BaseAnthropicMessagesConfig,
+)
 from litellm.llms.base_llm.audio_transcription.transformation import (
     BaseAudioTranscriptionConfig,
 )
@@ -451,6 +454,15 @@ def get_applied_guardrails(kwargs: Dict[str, Any]) -> List[str]:
     return applied_guardrails
 
 
+def get_dynamic_callbacks(
+    dynamic_callbacks: Optional[List[Union[str, Callable, CustomLogger]]]
+) -> List:
+    returned_callbacks = litellm.callbacks.copy()
+    if dynamic_callbacks:
+        returned_callbacks.extend(dynamic_callbacks)  # type: ignore
+    return returned_callbacks
+
+
 def function_setup(  # noqa: PLR0915
     original_function: str, rules_obj, start_time, *args, **kwargs
 ):  # just run once to check if user wants to send their data anywhere - PostHog/Sentry/Slack/etc.
@@ -475,12 +487,18 @@ def function_setup(  # noqa: PLR0915
         ## LOGGING SETUP
         function_id: Optional[str] = kwargs["id"] if "id" in kwargs else None
 
-        if len(litellm.callbacks) > 0:
-            for callback in litellm.callbacks:
+        ## DYNAMIC CALLBACKS ##
+        dynamic_callbacks: Optional[List[Union[str, Callable, CustomLogger]]] = (
+            kwargs.pop("callbacks", None)
+        )
+        all_callbacks = get_dynamic_callbacks(dynamic_callbacks=dynamic_callbacks)
+
+        if len(all_callbacks) > 0:
+            for callback in all_callbacks:
                 # check if callback is a string - e.g. "lago", "openmeter"
                 if isinstance(callback, str):
                     callback = litellm.litellm_core_utils.litellm_logging._init_custom_logger_compatible_class(  # type: ignore
-                        callback, internal_usage_cache=None, llm_router=None
+                        callback, internal_usage_cache=None, llm_router=None  # type: ignore
                     )
                     if callback is None or any(
                         isinstance(cb, type(callback))
@@ -1033,6 +1051,7 @@ def client(original_function):  # noqa: PLR0915
                 )
 
                 if caching_handler_response.cached_result is not None:
+                    verbose_logger.debug("Cache hit!")
                     return caching_handler_response.cached_result
 
             # CHECK MAX TOKENS
@@ -3240,6 +3259,7 @@ def get_optional_params(  # noqa: PLR0915
         )
     elif custom_llm_provider == "bedrock":
         bedrock_route = BedrockModelInfo.get_bedrock_route(model)
+        bedrock_base_model = BedrockModelInfo.get_base_model(model)
         if bedrock_route == "converse" or bedrock_route == "converse_like":
             optional_params = litellm.AmazonConverseConfig().map_openai_params(
                 model=model,
@@ -3253,8 +3273,9 @@ def get_optional_params(  # noqa: PLR0915
                 messages=messages,
             )
 
-        elif "anthropic" in model and bedrock_route == "invoke":
-            if model.startswith("anthropic.claude-3"):
+        elif "anthropic" in bedrock_base_model and bedrock_route == "invoke":
+            if bedrock_base_model.startswith("anthropic.claude-3"):
+
                 optional_params = (
                     litellm.AmazonAnthropicClaude3Config().map_openai_params(
                         non_default_params=non_default_params,
@@ -3267,10 +3288,17 @@ def get_optional_params(  # noqa: PLR0915
                         ),
                     )
                 )
+
             else:
                 optional_params = litellm.AmazonAnthropicConfig().map_openai_params(
                     non_default_params=non_default_params,
                     optional_params=optional_params,
+                    model=model,
+                    drop_params=(
+                        drop_params
+                        if drop_params is not None and isinstance(drop_params, bool)
+                        else False
+                    ),
                 )
         elif provider_config is not None:
             optional_params = provider_config.map_openai_params(
@@ -4378,6 +4406,12 @@ def _get_model_info_helper(  # noqa: PLR0915
                 input_cost_per_second=_model_info.get("input_cost_per_second", None),
                 input_cost_per_audio_token=_model_info.get(
                     "input_cost_per_audio_token", None
+                ),
+                input_cost_per_token_batches=_model_info.get(
+                    "input_cost_per_token_batches"
+                ),
+                output_cost_per_token_batches=_model_info.get(
+                    "output_cost_per_token_batches"
                 ),
                 output_cost_per_token=_output_cost_per_token,
                 output_cost_per_audio_token=_model_info.get(
@@ -6158,13 +6192,19 @@ class ProviderConfigManager:
         elif litellm.LlmProviders.BEDROCK == provider:
             bedrock_route = BedrockModelInfo.get_bedrock_route(model)
             bedrock_invoke_provider = litellm.BedrockLLM.get_bedrock_invoke_provider(
-                model
+                model=model
             )
+            base_model = BedrockModelInfo.get_base_model(model)
 
             if bedrock_route == "converse" or bedrock_route == "converse_like":
                 return litellm.AmazonConverseConfig()
             elif bedrock_invoke_provider == "amazon":  # amazon titan llms
                 return litellm.AmazonTitanConfig()
+            elif bedrock_invoke_provider == "anthropic":
+                if base_model.startswith("anthropic.claude-3"):
+                    return litellm.AmazonAnthropicClaude3Config()
+                else:
+                    return litellm.AmazonAnthropicConfig()
             elif (
                 bedrock_invoke_provider == "meta" or bedrock_invoke_provider == "llama"
             ):  # amazon / meta llms
@@ -6213,6 +6253,15 @@ class ProviderConfigManager:
         elif litellm.LlmProviders.JINA_AI == provider:
             return litellm.JinaAIRerankConfig()
         return litellm.CohereRerankConfig()
+
+    @staticmethod
+    def get_provider_anthropic_messages_config(
+        model: str,
+        provider: LlmProviders,
+    ) -> Optional[BaseAnthropicMessagesConfig]:
+        if litellm.LlmProviders.ANTHROPIC == provider:
+            return litellm.AnthropicMessagesConfig()
+        return None
 
     @staticmethod
     def get_provider_audio_transcription_config(
