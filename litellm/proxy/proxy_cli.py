@@ -117,6 +117,7 @@ class ProxyInitializationHelpers:
         host: str,
         port: int,
         log_config: Optional[str] = None,
+        reload: bool = False,
     ) -> dict:
         """
         Get the arguments for `uvicorn` worker
@@ -128,6 +129,8 @@ class ProxyInitializationHelpers:
             "host": host,
             "port": port,
         }
+        if reload:
+            uvicorn_args["reload"] = True
         if log_config is not None:
             print(f"Using log_config: {log_config}")  # noqa
             uvicorn_args["log_config"] = log_config
@@ -452,6 +455,7 @@ class ProxyInitializationHelpers:
     envvar="SSL_CERTFILE_PATH",
 )
 @click.option("--local", is_flag=True, default=False, help="for local debugging")
+@click.option("--reload", is_flag=True, default=False, help="reload on changes")
 def run_server(  # noqa: PLR0915
     host,
     port,
@@ -486,6 +490,7 @@ def run_server(  # noqa: PLR0915
     ssl_keyfile_path,
     ssl_certfile_path,
     log_config,
+    reload,
 ):
     args = locals()
     if local:
@@ -764,6 +769,7 @@ def run_server(  # noqa: PLR0915
             host=host,
             port=port,
             log_config=log_config,
+            reload=reload,
         )
         if run_gunicorn is False and run_hypercorn is False:
             if ssl_certfile_path is not None and ssl_keyfile_path is not None:
