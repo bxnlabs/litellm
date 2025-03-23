@@ -172,7 +172,7 @@ def get_complete_model_list(
 
     complete_model_list = list(unique_models) + all_wildcard_models
 
-    return complete_model_list
+    return sorted(complete_model_list)
 
 
 def get_known_models_from_wildcard(
