@@ -1,0 +1,38 @@
+name: sync
+
+on:
+
+  schedule:
+    - cron: '0 */1 * * *'  # Run every 1 hour
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Set up Git config
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/BerriAI/litellm.git
+          git fetch upstream
+      - name: Sync upstream branch
+        run: |
+          git fetch origin upstream:upstream
+          git checkout upstream
+          git reset --hard upstream/litellm_stable_release_branch
+          git push -f origin upstream
+      - name: Check if upstream diverged
+        id: check_diverged
+        run: |
+          git checkout main
+          git merge-base --is-ancestor origin/upstream HEAD
