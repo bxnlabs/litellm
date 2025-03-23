@@ -12,6 +12,7 @@ import click
 import httpx
 from dotenv import load_dotenv
 import urllib.parse
+
 if TYPE_CHECKING:
     from fastapi import FastAPI
 else:
@@ -119,6 +120,7 @@ class ProxyInitializationHelpers:
         port: int,
         log_config: Optional[str] = None,
         keepalive_timeout: Optional[int] = None,
+        reload: bool = False,
     ) -> dict:
         """
         Get the arguments for `uvicorn` worker
@@ -130,6 +132,8 @@ class ProxyInitializationHelpers:
             "host": host,
             "port": port,
         }
+        if reload:
+            uvicorn_args["reload"] = True
         if log_config is not None:
             print(f"Using log_config: {log_config}")  # noqa
             uvicorn_args["log_config"] = log_config
@@ -475,6 +479,7 @@ class ProxyInitializationHelpers:
     help="Set the uvicorn keepalive timeout in seconds (uvicorn timeout_keep_alive parameter)",
     envvar="KEEPALIVE_TIMEOUT",
 )
+@click.option("--reload", is_flag=True, default=False, help="reload on changes")
 def run_server(  # noqa: PLR0915
     host,
     port,
@@ -512,6 +517,7 @@ def run_server(  # noqa: PLR0915
     use_prisma_migrate,
     skip_server_startup,
     keepalive_timeout,
+    reload,
 ):
     args = locals()
     if local:
@@ -786,6 +792,7 @@ def run_server(  # noqa: PLR0915
             port=port,
             log_config=log_config,
             keepalive_timeout=keepalive_timeout,
+            reload=reload,
         )
         if run_gunicorn is False and run_hypercorn is False:
             if ssl_certfile_path is not None and ssl_keyfile_path is not None:
