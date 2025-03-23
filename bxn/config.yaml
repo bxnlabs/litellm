@@ -1,0 +1,152 @@
+model_list:
+  - model_name: "claude/haiku"
+    litellm_params:
+      model: anthropic/claude-haiku-4-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+  - model_name: "claude/haiku-thinking"
+    litellm_params:
+      model: anthropic/claude-haiku-4-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+      max_tokens: 32000
+      merge_reasoning_content_in_choices: true
+      thinking:
+        type: enabled
+        budget_tokens: 16384
+  - model_name: "claude/opus"
+    litellm_params:
+      model: anthropic/claude-opus-4-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+  - model_name: "claude/opus-thinking"
+    litellm_params:
+      model: anthropic/claude-opus-4-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+      max_tokens: 32000
+      merge_reasoning_content_in_choices: true
+      thinking:
+        type: enabled
+        budget_tokens: 16384
+  - model_name: "claude/sonnet"
+    litellm_params:
+      model: anthropic/claude-sonnet-4-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+  - model_name: "claude/sonnet-thinking"
+    litellm_params:
+      model: anthropic/claude-sonnet-4-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+      max_tokens: 32000
+      merge_reasoning_content_in_choices: true
+      thinking:
+        type: enabled
+        budget_tokens: 16384
+  - model_name: "gemini/flash"
+    litellm_params:
+      model: gemini/gemini-3-flash-preview
+      api_key: os.environ/GEMINI_API_KEY
+      safety_settings:
+        - category: HARM_CATEGORY_HARASSMENT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_HATE_SPEECH
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_SEXUALLY_EXPLICIT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_DANGEROUS_CONTENT
+          threshold: BLOCK_NONE
+  - model_name: "gemini/flash-thinking"
+    litellm_params:
+      model: gemini/gemini-3-flash-preview
+      api_key: os.environ/GEMINI_API_KEY
+      safety_settings:
+        - category: HARM_CATEGORY_HARASSMENT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_HATE_SPEECH
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_SEXUALLY_EXPLICIT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_DANGEROUS_CONTENT
+          threshold: BLOCK_NONE
+      thinking:
+        type: enabled
+        budget_tokens: 16384
+  - model_name: "gemini/pro"
+    litellm_params:
+      model: gemini/gemini-3-pro-preview
+      api_key: os.environ/GEMINI_API_KEY
+      safety_settings:
+        - category: HARM_CATEGORY_HARASSMENT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_HATE_SPEECH
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_SEXUALLY_EXPLICIT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_DANGEROUS_CONTENT
+          threshold: BLOCK_NONE
+  - model_name: "gemini/pro-thinking"
+    litellm_params:
+      model: gemini/gemini-3-pro-preview
+      api_key: os.environ/GEMINI_API_KEY
+      safety_settings:
+        - category: HARM_CATEGORY_HARASSMENT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_HATE_SPEECH
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_SEXUALLY_EXPLICIT
+          threshold: BLOCK_NONE
+        - category: HARM_CATEGORY_DANGEROUS_CONTENT
+          threshold: BLOCK_NONE
+      thinking:
+        type: enabled
+        budget_tokens: 16384
+  - model_name: "openai/gpt-5.1"
+    litellm_params:
+      model: openai/gpt-5.1
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "openai/gpt-5.1-thinking"
+    litellm_params:
+      model: openai/responses/gpt-5.1
+      api_key: os.environ/OPENAI_API_KEY
+      reasoning_effort:
+        effort: high
+        summary: auto
+  - model_name: "openai/gpt-5.2"
+    litellm_params:
+      model: openai/gpt-5.2
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "openai/gpt-5.2-thinking"
+    litellm_params:
+      model: openai/responses/gpt-5.2
+      api_key: os.environ/OPENAI_API_KEY
+      reasoning_effort:
+        effort: high
+        summary: auto
+  - model_name: "openai/gpt-5-pro-thinking"
+    litellm_params:
+      model: openai/responses/gpt-5.2-pro
+      api_key: os.environ/OPENAI_API_KEY
+      reasoning_effort:
+        effort: high
+        summary: auto
+  - model_name: "perplexity/sonar"
+    litellm_params:
+      model: perplexity/sonar
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-pro"
+    litellm_params:
+      model: perplexity/sonar-pro
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-reasoning"
+    litellm_params:
+      model: perplexity/sonar-reasoning
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-reasoning-pro"
+    litellm_params:
+      model: perplexity/sonar-reasoning-pro
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-deep-research"
+    litellm_params:
+      model: perplexity/sonar-deep-research
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-deep-research-high"
+    litellm_params:
+      model: perplexity/sonar-deep-research
+      api_key: os.environ/PERPLEXITY_API_KEY
+      reasoning_effort: "high"
