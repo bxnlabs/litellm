@@ -155,7 +155,7 @@ def get_complete_model_list(
         llm_router=llm_router,
     )
 
-    return list(unique_models) + all_wildcard_models
+    return sorted(unique_models) + all_wildcard_models
 
 
 def get_known_models_from_wildcard(
