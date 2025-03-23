@@ -498,6 +498,7 @@ class ProxyInitializationHelpers:
     help="Restart worker after this many requests (uvicorn: limit_max_requests, gunicorn: max_requests)",
     envvar="MAX_REQUESTS_BEFORE_RESTART",
 )
+@click.option("--reload", is_flag=True, default=False, help="reload on changes")
 def run_server(  # noqa: PLR0915
     host,
     port,
@@ -537,6 +538,7 @@ def run_server(  # noqa: PLR0915
     skip_server_startup,
     keepalive_timeout,
     max_requests_before_restart,
+    reload,
 ):
     args = locals()
     if local:
@@ -829,6 +831,11 @@ def run_server(  # noqa: PLR0915
         # Optional: recycle uvicorn workers after N requests
         if max_requests_before_restart is not None:
             uvicorn_args["limit_max_requests"] = max_requests_before_restart
+
+        # Optional: reload on changes
+        if reload:
+            uvicorn_args["reload"] = True
+
         if run_gunicorn is False and run_hypercorn is False:
             if ssl_certfile_path is not None and ssl_keyfile_path is not None:
                 print(  # noqa
