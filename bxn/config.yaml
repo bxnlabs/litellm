@@ -1,0 +1,134 @@
+model_list:
+  - model_name: "claude/haiku"
+    litellm_params:
+      model: anthropic/claude-3-5-haiku-20241022
+      api_key: os.environ/ANTHROPIC_API_KEY
+  - model_name: "claude/sonnet"
+    litellm_params:
+      model: anthropic/claude-3-7-sonnet-20250219
+      api_key: os.environ/ANTHROPIC_API_KEY
+  - model_name: "claude/sonnet-thinking"
+    litellm_params:
+      model: anthropic/claude-3-7-sonnet-20250219
+      api_key: os.environ/ANTHROPIC_API_KEY
+      max_tokens: 64000
+      merge_reasoning_content_in_choices: true
+      thinking:
+        type: enabled
+        budget_tokens: 32000
+  - model_name: "gemini/flash"
+    litellm_params:
+      model: openai/gemini-2.0-flash-001
+      api_key: os.environ/GEMINI_API_KEY
+      api_base: "https://generativelanguage.googleapis.com/v1beta/openai/"
+  - model_name: "gemini/flash-preview"
+    litellm_params:
+      model: openai/gemini-2.5-flash-preview-04-17
+      api_key: os.environ/GEMINI_API_KEY
+      api_base: "https://generativelanguage.googleapis.com/v1beta/openai/"
+  - model_name: "gemini/pro"
+    litellm_params:
+      model: openai/gemini-1.5-pro-002
+      api_key: os.environ/GEMINI_API_KEY
+      api_base: "https://generativelanguage.googleapis.com/v1beta/openai/"
+  - model_name: "gemini/pro-preview"
+    litellm_params:
+      model: openai/gemini-2.5-pro-exp-03-25
+      api_key: os.environ/GEMINI_API_KEY
+      api_base: "https://generativelanguage.googleapis.com/v1beta/openai/"
+  - model_name: "openai/4.1"
+    litellm_params:
+      model: openai/gpt-4.1-2025-04-14
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "openai/4.1-mini"
+    litellm_params:
+      model: openai/gpt-4.1-mini-2025-04-14
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "openai/4.1-nano"
+    litellm_params:
+      model: openai/gpt-4.1-nano-2025-04-14
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "openai/chatgpt"
+    litellm_params:
+      model: openai/chatgpt-4o-latest
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "openai/o4-mini"
+    litellm_params:
+      model: openai/o4-mini-2025-04-16
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "openai/o4-mini-high"
+    litellm_params:
+      model: openai/o4-mini-2025-04-16
+      api_key: os.environ/OPENAI_API_KEY
+      reasoning_effort: "high"
+  - model_name: "openai/o3"
+    litellm_params:
+      model: openai/o3-2025-04-16
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: "openai/o3-high"
+    litellm_params:
+      model: openai/o3-2025-04-16
+      api_key: os.environ/OPENAI_API_KEY
+      reasoning_effort: "high"
+  - model_name: "mistral/large"
+    litellm_params:
+      model: mistral/mistral-large-2411
+      api_key: os.environ/MISTRAL_API_KEY
+  - model_name: "mistral/codestral"
+    litellm_params:
+      model: mistral/codestral-2501
+      api_key: os.environ/MISTRAL_API_KEY
+  - model_name: "mistral/pixtral-large"
+    litellm_params:
+      model: mistral/pixtral-large-2411
+      api_key: os.environ/MISTRAL_API_KEY
+  - model_name: "perplexity/sonar"
+    litellm_params:
+      model: perplexity/sonar
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-reasoning"
+    litellm_params:
+      model: perplexity/sonar-reasoning
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-pro"
+    litellm_params:
+      model: perplexity/sonar-pro
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-reasoning-pro"
+    litellm_params:
+      model: perplexity/sonar-reasoning-pro
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/r1"
+    litellm_params:
+      model: perplexity/r1-1776
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "togetherai/llama-4-maverick"
+    litellm_params:
+      model: openai/meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8
+      api_key: os.environ/TOGETHER_API_KEY
+      api_base: "https://api.together.xyz/v1"
+  - model_name: "togetherai/llama-4-scout"
+    litellm_params:
+      model: openai/meta-llama/Llama-4-Scout-17B-16E-Instruct
+      api_key: os.environ/TOGETHER_API_KEY
+      api_base: "https://api.together.xyz/v1"
+  - model_name: "togetherai/qwen-2.5-coder-32b"
+    litellm_params:
+      model: openai/Qwen/Qwen2.5-Coder-32B-Instruct
+      api_key: os.environ/TOGETHER_API_KEY
+      api_base: "https://api.together.xyz/v1"
+  - model_name: "togetherai/qwq-32b"
+    litellm_params:
+      model: openai/Qwen/QwQ-32B
+      api_key: os.environ/TOGETHER_API_KEY
+      api_base: "https://api.together.xyz/v1"
+  - model_name: "togetherai/deepseek-v3"
+    litellm_params:
+      model: openai/deepseek-ai/DeepSeek-V3
+      api_key: os.environ/TOGETHER_API_KEY
+      api_base: "https://api.together.xyz/v1"
+  - model_name: "togetherai/deepseek-r1"
+    litellm_params:
+      model: openai/deepseek-ai/DeepSeek-R1
+      api_key: os.environ/TOGETHER_API_KEY
+      api_base: "https://api.together.xyz/v1"
