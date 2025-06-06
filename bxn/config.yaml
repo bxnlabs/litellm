@@ -31,20 +31,7 @@ model_list:
         budget_tokens: 16000
   - model_name: "gemini/flash"
     litellm_params:
-      model: gemini/gemini-2.0-flash
-      api_key: os.environ/GEMINI_API_KEY
-      safety_settings:
-        - category: HARM_CATEGORY_HARASSMENT
-          threshold: BLOCK_NONE
-        - category: HARM_CATEGORY_HATE_SPEECH
-          threshold: BLOCK_NONE
-        - category: HARM_CATEGORY_SEXUALLY_EXPLICIT
-          threshold: BLOCK_NONE
-        - category: HARM_CATEGORY_DANGEROUS_CONTENT
-          threshold: BLOCK_NONE
-  - model_name: "gemini/flash-preview"
-    litellm_params:
-      model: gemini/gemini-2.5-flash-preview-04-17
+      model: gemini/gemini-2.5-flash-preview-05-20
       api_key: os.environ/GEMINI_API_KEY
       safety_settings:
         - category: HARM_CATEGORY_HARASSMENT
@@ -57,7 +44,7 @@ model_list:
           threshold: BLOCK_NONE
   - model_name: "gemini/pro"
     litellm_params:
-      model: gemini/gemini-2.5-pro-preview-05-06
+      model: gemini/gemini-2.5-pro-preview-06-05
       api_key: os.environ/GEMINI_API_KEY
       safety_settings:
         - category: HARM_CATEGORY_HARASSMENT
