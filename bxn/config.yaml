@@ -95,6 +95,10 @@ model_list:
       model: openai/o4-mini
       api_key: os.environ/OPENAI_API_KEY
       reasoning_effort: "high"
+  - model_name: "mistral/magistral-medium"
+    litellm_params:
+      model: mistral/magistral-medium-latest
+      api_key: os.environ/MISTRAL_API_KEY
   - model_name: "mistral/large"
     litellm_params:
       model: mistral/mistral-large-latest
