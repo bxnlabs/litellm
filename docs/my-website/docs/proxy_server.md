@@ -213,7 +213,7 @@ docker compose up -d
 <TabItem value="autogen" label="AutoGen">
 
 ```python
-pip install pyautogen
+pip install ag2
 ```
 
 ```python
@@ -448,7 +448,7 @@ $ aider --openai-api-base http://0.0.0.0:8000 --openai-api-key fake-key
 <TabItem value="autogen" label="AutoGen">
 
 ```python
-pip install pyautogen
+pip install ag2
 ```
 
 ```python
