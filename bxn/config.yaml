@@ -1,15 +1,11 @@
 model_list:
-  - model_name: "claude/haiku"
-    litellm_params:
-      model: anthropic/claude-3-5-haiku-latest
-      api_key: os.environ/ANTHROPIC_API_KEY
   - model_name: "claude/opus"
     litellm_params:
-      model: anthropic/claude-opus-4-20250514
+      model: anthropic/claude-opus-4-1-20250805
       api_key: os.environ/ANTHROPIC_API_KEY
   - model_name: "claude/opus-thinking"
     litellm_params:
-      model: anthropic/claude-opus-4-20250514
+      model: anthropic/claude-opus-4-1-20250805
       api_key: os.environ/ANTHROPIC_API_KEY
       max_tokens: 32000
       merge_reasoning_content_in_choices: true
@@ -31,7 +27,7 @@ model_list:
         budget_tokens: 16000
   - model_name: "gemini/flash"
     litellm_params:
-      model: gemini/gemini-2.5-flash-preview-05-20
+      model: gemini/gemini-2.5-flash
       api_key: os.environ/GEMINI_API_KEY
       safety_settings:
         - category: HARM_CATEGORY_HARASSMENT
@@ -47,7 +43,7 @@ model_list:
         budget_tokens: 16000
   - model_name: "gemini/pro"
     litellm_params:
-      model: gemini/gemini-2.5-pro-preview-06-05
+      model: gemini/gemini-2.5-pro
       api_key: os.environ/GEMINI_API_KEY
       safety_settings:
         - category: HARM_CATEGORY_HARASSMENT
@@ -61,21 +57,18 @@ model_list:
       thinking:
         type: enabled
         budget_tokens: 16000
-  - model_name: "openai/4.1"
+  - model_name: "openai/gpt-5"
     litellm_params:
-      model: openai/gpt-4.1
+      model: openai/gpt-5
       api_key: os.environ/OPENAI_API_KEY
-  - model_name: "openai/4.1-mini"
+  - model_name: "openai/gpt-5-high"
     litellm_params:
-      model: openai/gpt-4.1-mini
+      model: openai/gpt-5
       api_key: os.environ/OPENAI_API_KEY
-  - model_name: "openai/4.1-nano"
-    litellm_params:
-      model: openai/gpt-4.1-nano
-      api_key: os.environ/OPENAI_API_KEY
+      reasoning_effort: "high"
   - model_name: "openai/chatgpt"
     litellm_params:
-      model: openai/chatgpt-4o-latest
+      model: openai/gpt-5-chat-latest
       api_key: os.environ/OPENAI_API_KEY
   - model_name: "openai/o3"
     litellm_params:
@@ -86,35 +79,10 @@ model_list:
       model: openai/o3
       api_key: os.environ/OPENAI_API_KEY
       reasoning_effort: "high"
-  - model_name: "openai/o4-mini"
-    litellm_params:
-      model: openai/o4-mini
-      api_key: os.environ/OPENAI_API_KEY
-  - model_name: "openai/o4-mini-high"
-    litellm_params:
-      model: openai/o4-mini
-      api_key: os.environ/OPENAI_API_KEY
-      reasoning_effort: "high"
-  - model_name: "mistral/magistral-medium"
-    litellm_params:
-      model: mistral/magistral-medium-latest
-      api_key: os.environ/MISTRAL_API_KEY
   - model_name: "mistral/large"
     litellm_params:
       model: mistral/mistral-large-latest
       api_key: os.environ/MISTRAL_API_KEY
-  - model_name: "mistral/medium"
-    litellm_params:
-      model: mistral/mistral-medium-latest
-      api_key: os.environ/MISTRAL_API_KEY
-  - model_name: "mistral/pixtral-large"
-    litellm_params:
-      model: mistral/pixtral-large-latest
-      api_key: os.environ/MISTRAL_API_KEY
-  - model_name: "perplexity/r1"
-    litellm_params:
-      model: perplexity/r1-1776
-      api_key: os.environ/PERPLEXITY_API_KEY
   - model_name: "perplexity/sonar"
     litellm_params:
       model: perplexity/sonar
@@ -131,6 +99,15 @@ model_list:
     litellm_params:
       model: perplexity/sonar-reasoning-pro
       api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-deep-research"
+    litellm_params:
+      model: perplexity/sonar-deep-research
+      api_key: os.environ/PERPLEXITY_API_KEY
+  - model_name: "perplexity/sonar-deep-research-high"
+    litellm_params:
+      model: perplexity/sonar-deep-research
+      api_key: os.environ/PERPLEXITY_API_KEY
+      reasoning_effort: "high"
   - model_name: "togetherai/deepseek-r1"
     litellm_params:
       model: openai/deepseek-ai/DeepSeek-R1
@@ -146,23 +123,18 @@ model_list:
       model: openai/moonshotai/Kimi-K2-Instruct
       api_key: os.environ/TOGETHER_API_KEY
       api_base: "https://api.together.xyz/v1"
-  - model_name: "togetherai/llama-4-maverick"
-    litellm_params:
-      model: openai/meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8
-      api_key: os.environ/TOGETHER_API_KEY
-      api_base: "https://api.together.xyz/v1"
-  - model_name: "togetherai/llama-4-scout"
-    litellm_params:
-      model: openai/meta-llama/Llama-4-Scout-17B-16E-Instruct
-      api_key: os.environ/TOGETHER_API_KEY
-      api_base: "https://api.together.xyz/v1"
-  - model_name: "togetherai/perplexity-r1"
-    litellm_params:
-      model: openai/perplexity-ai/r1-1776
-      api_key: os.environ/TOGETHER_API_KEY
-      api_base: "https://api.together.xyz/v1"
   - model_name: "togetherai/qwen-3"
     litellm_params:
-      model: openai/Qwen/Qwen3-235B-A22B-fp8-tput
+      model: openai/Qwen/Qwen3-235B-A22B-Instruct-2507-tput
+      api_key: os.environ/TOGETHER_API_KEY
+      api_base: "https://api.together.xyz/v1"
+  - model_name: "togetherai/qwen-3-coder"
+    litellm_params:
+      model: openai/Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8
+      api_key: os.environ/TOGETHER_API_KEY
+      api_base: "https://api.together.xyz/v1"
+  - model_name: "togetherai/qwen-3-thinking"
+    litellm_params:
+      model: openai/Qwen/Qwen3-235B-A22B-Thinking-2507
       api_key: os.environ/TOGETHER_API_KEY
       api_base: "https://api.together.xyz/v1"
