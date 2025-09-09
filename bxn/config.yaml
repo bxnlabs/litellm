@@ -118,7 +118,8 @@ model_list:
       model: openai/deepseek-ai/DeepSeek-V3.1
       api_key: os.environ/TOGETHER_API_KEY
       api_base: "https://api.together.xyz/v1"
-      reasoning_effort: "high"
+      chat_template_kwargs:
+        thinking: true
   - model_name: "togetherai/kimi-k2"
     litellm_params:
       model: openai/moonshotai/Kimi-K2-Instruct-0905
