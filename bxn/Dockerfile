@@ -28,7 +28,7 @@ COPY litellm ./litellm
 RUN uv pip install --no-deps --compile .
 
 
-FROM ghcr.io/bxnlabs/containers/py-base:20250918.1_51a4291@sha256:ee67b6d1603d2d8aa8606cd745cc63b8edb834bb1dd8201559ce720a415cbab9
+FROM ghcr.io/bxnlabs/containers/py-base:20250920.1_c0e9aab@sha256:213bc7ba413e15770fb07dcc2b4fce8fb779b99705230879a08dbd9f584350ab
 
 COPY --from=build ${VIRTUAL_ENV}/ ${VIRTUAL_ENV}/
 COPY bxn/config.yaml /etc/litellm/config.yaml
