@@ -117,35 +117,3 @@ model_list:
       model: perplexity/sonar-deep-research
       api_key: os.environ/PERPLEXITY_API_KEY
       reasoning_effort: "high"
-  - model_name: "togetherai/deepseek-v3"
-    litellm_params:
-      model: openai/deepseek-ai/DeepSeek-V3.1
-      api_key: os.environ/TOGETHER_API_KEY
-      api_base: "https://api.together.xyz/v1"
-  - model_name: "togetherai/deepseek-v3-thinking"
-    litellm_params:
-      model: openai/deepseek-ai/DeepSeek-V3.1
-      api_key: os.environ/TOGETHER_API_KEY
-      api_base: "https://api.together.xyz/v1"
-      chat_template_kwargs:
-        thinking: true
-  - model_name: "togetherai/kimi-k2"
-    litellm_params:
-      model: openai/moonshotai/Kimi-K2-Instruct-0905
-      api_key: os.environ/TOGETHER_API_KEY
-      api_base: "https://api.together.xyz/v1"
-  - model_name: "togetherai/qwen-3"
-    litellm_params:
-      model: openai/Qwen/Qwen3-235B-A22B-Instruct-2507-tput
-      api_key: os.environ/TOGETHER_API_KEY
-      api_base: "https://api.together.xyz/v1"
-  - model_name: "togetherai/qwen-3-coder"
-    litellm_params:
-      model: openai/Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8
-      api_key: os.environ/TOGETHER_API_KEY
-      api_base: "https://api.together.xyz/v1"
-  - model_name: "togetherai/qwen-3-thinking"
-    litellm_params:
-      model: openai/Qwen/Qwen3-235B-A22B-Thinking-2507
-      api_key: os.environ/TOGETHER_API_KEY
-      api_base: "https://api.together.xyz/v1"
