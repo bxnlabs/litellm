@@ -1,4 +1,4 @@
-FROM ghcr.io/bxnlabs/containers/py-devtools:20251031.1_57abb65@sha256:94704885659eece97b6b77837d71577a8f424fc2c4cd0fc3aa21621c33ddd001 AS deps
+FROM ghcr.io/bxnlabs/containers/py-devtools:20251104.1_066404a@sha256:3e87999d35bea2f08e8e57fd7b5c4fe99fc6d4d9e27027838d593476aa9058b5 AS deps
 
 # Dependencies
 COPY pyproject.toml [p]oetry.lock ./
