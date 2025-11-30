@@ -1,11 +1,24 @@
 model_list:
+  - model_name: "claude/haiku"
+    litellm_params:
+      model: anthropic/claude-haiku-4-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+  - model_name: "claude/haiku-thinking"
+    litellm_params:
+      model: anthropic/claude-haiku-4-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+      max_tokens: 32000
+      merge_reasoning_content_in_choices: true
+      thinking:
+        type: enabled
+        budget_tokens: 16000
   - model_name: "claude/opus"
     litellm_params:
-      model: anthropic/claude-opus-4-1-20250805
+      model: anthropic/claude-opus-4-5
       api_key: os.environ/ANTHROPIC_API_KEY
   - model_name: "claude/opus-thinking"
     litellm_params:
-      model: anthropic/claude-opus-4-1-20250805
+      model: anthropic/claude-opus-4-5
       api_key: os.environ/ANTHROPIC_API_KEY
       max_tokens: 32000
       merge_reasoning_content_in_choices: true
@@ -14,36 +27,20 @@ model_list:
         budget_tokens: 16000
   - model_name: "claude/sonnet"
     litellm_params:
-      model: anthropic/claude-sonnet-4-5-20250929
+      model: anthropic/claude-sonnet-4-5
       api_key: os.environ/ANTHROPIC_API_KEY
   - model_name: "claude/sonnet-thinking"
     litellm_params:
-      model: anthropic/claude-sonnet-4-5-20250929
+      model: anthropic/claude-sonnet-4-5
       api_key: os.environ/ANTHROPIC_API_KEY
       max_tokens: 32000
       merge_reasoning_content_in_choices: true
       thinking:
         type: enabled
         budget_tokens: 16000
-  - model_name: "gemini/flash"
-    litellm_params:
-      model: gemini/gemini-2.5-flash
-      api_key: os.environ/GEMINI_API_KEY
-      safety_settings:
-        - category: HARM_CATEGORY_HARASSMENT
-          threshold: BLOCK_NONE
-        - category: HARM_CATEGORY_HATE_SPEECH
-          threshold: BLOCK_NONE
-        - category: HARM_CATEGORY_SEXUALLY_EXPLICIT
-          threshold: BLOCK_NONE
-        - category: HARM_CATEGORY_DANGEROUS_CONTENT
-          threshold: BLOCK_NONE
-      thinking:
-        type: enabled
-        budget_tokens: 16000
   - model_name: "gemini/pro"
     litellm_params:
-      model: gemini/gemini-2.5-pro
+      model: gemini/gemini-3-pro-preview
       api_key: os.environ/GEMINI_API_KEY
       safety_settings:
         - category: HARM_CATEGORY_HARASSMENT
@@ -57,41 +54,19 @@ model_list:
       thinking:
         type: enabled
         budget_tokens: 16000
-  - model_name: "openai/gpt-5"
+  - model_name: "openai/gpt-5.1"
     litellm_params:
-      model: openai/gpt-5
+      model: openai/responses/gpt-5.1
       api_key: os.environ/OPENAI_API_KEY
-  - model_name: "openai/gpt-5-high"
+  - model_name: "openai/gpt-5.1-high"
     litellm_params:
-      model: openai/gpt-5
-      api_key: os.environ/OPENAI_API_KEY
-      reasoning_effort: "high"
-  - model_name: "openai/gpt-5-mini"
-    litellm_params:
-      model: openai/gpt-5-mini
-      api_key: os.environ/OPENAI_API_KEY
-  - model_name: "openai/gpt-5-mini-high"
-    litellm_params:
-      model: openai/gpt-5-mini
+      model: openai/responses/gpt-5.1
       api_key: os.environ/OPENAI_API_KEY
       reasoning_effort: "high"
   - model_name: "openai/chatgpt"
     litellm_params:
       model: openai/gpt-5-chat-latest
       api_key: os.environ/OPENAI_API_KEY
-  - model_name: "openai/o3"
-    litellm_params:
-      model: openai/o3
-      api_key: os.environ/OPENAI_API_KEY
-  - model_name: "openai/o3-high"
-    litellm_params:
-      model: openai/o3
-      api_key: os.environ/OPENAI_API_KEY
-      reasoning_effort: "high"
-  - model_name: "mistral/large"
-    litellm_params:
-      model: mistral/mistral-large-latest
-      api_key: os.environ/MISTRAL_API_KEY
   - model_name: "perplexity/sonar"
     litellm_params:
       model: perplexity/sonar
@@ -117,3 +92,9 @@ model_list:
       model: perplexity/sonar-deep-research
       api_key: os.environ/PERPLEXITY_API_KEY
       reasoning_effort: "high"
+  - model_name: "kimi-k2-thinking"
+    litellm_params:
+      model: "openai/moonshotai/Kimi-K2-Thinking"
+      api_base: https://api.together.xyz/v1/
+      api_key: os.environ/TOGETHER_API_KEY
+      merge_reasoning_content_in_choices: true
