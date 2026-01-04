@@ -15,6 +15,7 @@
     {
       "matchDatasources": ["docker"],
       "matchPackagePatterns": ["^ghcr.io/bxnlabs/containers/py-"],
+      "maxMajorIncrement": 0,
       "groupName": "bxnlabs python base images"
     },
     {
