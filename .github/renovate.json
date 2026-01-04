@@ -13,9 +13,12 @@
   ],
   "packageRules": [
     {
-      "matchDatasources": [
-        "docker"
-      ],
+      "matchDatasources": ["docker"],
+      "matchPackagePatterns": ["^ghcr.io/bxnlabs/containers/py-"],
+      "groupName": "bxnlabs python base images"
+    },
+    {
+      "matchDatasources": ["docker"],
       "pinDigests": true,
       "versioning": "loose"
     }
