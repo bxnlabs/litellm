@@ -27,11 +27,11 @@ model_list:
         budget_tokens: 16384
   - model_name: "claude/sonnet"
     litellm_params:
-      model: anthropic/claude-sonnet-4-5
+      model: anthropic/claude-sonnet-4-6
       api_key: os.environ/ANTHROPIC_API_KEY
   - model_name: "claude/sonnet-thinking"
     litellm_params:
-      model: anthropic/claude-sonnet-4-5
+      model: anthropic/claude-sonnet-4-6
       api_key: os.environ/ANTHROPIC_API_KEY
       max_tokens: 32000
       merge_reasoning_content_in_choices: true
