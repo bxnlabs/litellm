@@ -1,4 +1,4 @@
-FROM ghcr.io/bxnlabs/containers/py-devtools:20260409.2_dc888f2@sha256:14d567b729b77b7e2d24bc73bc96b9cf901abbfc507d546a8360898228c37feb AS deps
+FROM ghcr.io/bxnlabs/containers/py-devtools:20260409.3_60cec41@sha256:6bb2f606582b08ba060141afec72dabbc2633397be8199d433473a061aaa1fc6 AS deps
 
 # Dependencies
 COPY pyproject.toml [p]oetry.lock ./
@@ -28,7 +28,7 @@ COPY litellm ./litellm
 RUN uv pip install --no-deps --compile .
 
 
-FROM ghcr.io/bxnlabs/containers/py-base:20260409.2_dc888f2@sha256:f409cf64282c4311de8e15058d6863b8d6f6d856bb99b66158a6ebe9e2a6b827
+FROM ghcr.io/bxnlabs/containers/py-base:20260409.3_60cec41@sha256:1fefdc08d4c13fba8a2ad32014bdc733bccb508aac14485cd2935e6c1f9cc003
 
 COPY --from=build ${VIRTUAL_ENV}/ ${VIRTUAL_ENV}/
 COPY bxn/config.yaml /etc/litellm/config.yaml
